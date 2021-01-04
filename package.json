@@ -1,0 +1,21 @@
+{
+  "name": "openingsexercise",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./test",
+    "start": "node ./app",
+    "dev": "nodemon ./app",
+    "prod": "NODE_ENV=production node ./app"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@google-cloud/firestore": "^4.8.1",
+    "abort-controller": "^3.0.0",
+    "ndjson": "^2.0.0",
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
