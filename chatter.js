@@ -17,7 +17,7 @@ function Chatter(gamer) {
   };
 
   const parse = (text) => {
-    let openingRegex = /[a-z|A-Z|0-9]{8}/;
+    let openingRegex = /[a-z0-9]*/;
 
     switch (text) {
     case "Hello":

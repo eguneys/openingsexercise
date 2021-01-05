@@ -12,7 +12,7 @@ We scored ${ply} out of ${maxDepth} moves.
   },
   openingNotFound(opening) {
     return `
-Opening not found ${opening}.
+Opening not found ${opening}. See my profile for a list of openings.
 `;
   },
   openingLine(line) {
