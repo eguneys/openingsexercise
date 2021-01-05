@@ -27,6 +27,12 @@ function Coll(name) {
   this.one = id =>
   coll.doc(id).get().then(_ => _.exists && $doc(_));
 
+  this.all = () =>
+  coll.listDocuments()
+    .then(refs =>
+      Promise.all(refs.map(_ => _.get().then($doc)))
+    );
+
   this.query = fQuery =>
   fQuery(coll).get().then(qSnapshot => {
     let res = [];
@@ -45,9 +51,9 @@ function Coll(name) {
   this.drop = () =>
   coll.listDocuments()
     .then(refs =>
-      refs.forEach(ref =>
+      Promise.all(refs.map(ref =>
         ref.delete()
-      )
+      ))
     );
   
 }

@@ -1,8 +1,19 @@
+const { URLSearchParams } = require('url');
 const fetch = require('node-fetch');
 const listenStreaming = require('./streamingapi');
-const Player = require('./player');
 
-function BotApi(token) {
+const Player = require('./player');
+const Chatter = require('./chatter');
+
+const fixtures = require('./chatfixtures');
+
+const Serializer = require('./serializer');
+
+function BotApi(ctx) {
+
+  let serializer = new Serializer();
+
+  let { token } = ctx;
 
   let headers = {
     'Authorization': `Bearer ${token}`,
@@ -11,7 +22,7 @@ function BotApi(token) {
 
   this.listenGame = async (gameId) => {
     
-    let gamer = new Gamer(this);
+    let gamer = new Gamer(this, gameId, ctx);
 
     let url = `https://lichess.org/api/bot/game/stream/${gameId}`;
 
@@ -87,15 +98,25 @@ function BotApi(token) {
   this.chat = async (gameId, text) => {
     let url = `https://lichess.org/api/bot/game/${gameId}/chat`;
 
-    await fetch(url, { headers, method: 'POST', body: {
-      room: 'player',
-      text
-    } });
+    const params = new URLSearchParams();
+    params.append('room', 'player');
+    params.append('text', text);
+
+    let res = await fetch(url, { headers, method: 'POST', body: params });
+  };
+
+  this.play = async (gameId, uci, offerDraw) => {
+    let url = `https://lichess.org/api/bot/game/${gameId}/move/${uci}`;
+
+    const params = new URLSearchParams();
+    params.append('offeringDraw', !!offerDraw);
+
+    let res = await fetch(url + '?' + params, { headers, method: 'POST', params });
   };
   
 }
 
-function Gamer(botApi) {
+function Gamer(botApi, gameId, ctx) {
 
   const whiteIf = cond => cond ? 'white' : 'black';
   const opposite = color => whiteIf(color === 'black');
@@ -106,10 +127,36 @@ function Gamer(botApi) {
       opponentName,
       moves;
 
-  let player = new Player(this);
+  let player = new Player(this, ctx);
+  let chatter = new Chatter(this);
 
   const maybeAbortStatus = status => {
     return status !== 'started';
+  };
+
+  this.greet = () => {
+    botApi.chat(gameId, fixtures.greet(opponentName));
+    botApi.chat(gameId, fixtures.startPlaying());
+  };
+
+  this.chatOpeningLine = line => {
+    botApi.chat(gameId, fixtures.openingLine(line));
+  };
+
+  this.chat = line => {
+    botApi.chat(gameId, line);
+  };
+
+  this.play = (uci, offerDraw) => {
+    botApi.play(gameId, uci, offerDraw);
+  };
+
+  this.startPlay = () => {
+    player.startPlay();
+  };
+
+  this.selectOpening = opening => {
+    player.startPlay(opening);
   };
 
   this.gameFull = (game) => {
@@ -124,6 +171,8 @@ function Gamer(botApi) {
 
     player.init(povColor, initialFen, moves, status);
 
+    chatter.init(botName, opponentName);
+
     return maybeAbortStatus(status);
   };
 
@@ -136,7 +185,7 @@ function Gamer(botApi) {
   };
 
   this.chatLine = (line) => {
-    console.log(line);
+    chatter.chatLine(line);
   };
 
 }
