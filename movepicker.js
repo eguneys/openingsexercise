@@ -49,7 +49,10 @@ function MovePicker(player, ctx) {
   async function bookMove(moves) {
     let fen = playMoves(moves)
         .map(_ => _.toFen())
-        .getOrElse(() => false);
+        .getOrElse((err) => {
+          console.error(`[Failed to play moves] ${err}`);
+          return false;
+        });
 
     if (!fen) {
       return false;

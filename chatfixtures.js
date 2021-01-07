@@ -6,9 +6,11 @@ let fixtures = {
     return `We entered a new branch ${variation}.`;
   },
   outOfBook(maxDepth, ply) {
-    return `I'm out of book now.
-We scored ${ply} out of ${maxDepth} moves.
-`;
+    let res =  `I'm out of book now.`;
+    if (ply) {
+      res += `We scored ${ply} out of ${maxDepth} moves.`;
+    }
+    return res;
   },
   openingNotFound(opening) {
     return `

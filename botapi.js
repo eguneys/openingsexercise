@@ -1,5 +1,5 @@
 const { URLSearchParams } = require('url');
-const fetch = require('node-fetch');
+const Rapi = require('./reliableapi');
 const listenStreaming = require('./streamingapi');
 
 const Player = require('./player');
@@ -19,6 +19,8 @@ function BotApi(ctx) {
     'Authorization': `Bearer ${token}`,
     'Accept': 'application/json'
   };
+
+  let rApi = new Rapi('https://lichess.org/');
 
   this.listenGame = async (gameId) => {
     
@@ -83,35 +85,35 @@ function BotApi(ctx) {
   };
 
   this.accept = async (challengeId) => {
-    let url = `https://lichess.org/api/challenge/${challengeId}/accept`;
+    let url = `api/challenge/${challengeId}/accept`;
 
-    await fetch(url, { headers, method: 'POST' });
+    await rApi.json(url, { headers, method: 'POST' });
   };
 
   this.decline = async (challengeId) => {
-    let url = `https://lichess.org/api/challenge/${challengeId}/decline`;
+    let url = `api/challenge/${challengeId}/decline`;
 
-    await fetch(url, { headers, method: 'POST' });    
+    await rApi.json(url, { headers, method: 'POST' });    
   };
 
 
   this.chat = async (gameId, text) => {
-    let url = `https://lichess.org/api/bot/game/${gameId}/chat`;
+    let url = `api/bot/game/${gameId}/chat`;
 
     const params = new URLSearchParams();
     params.append('room', 'player');
     params.append('text', text);
 
-    let res = await fetch(url, { headers, method: 'POST', body: params });
+    await rApi.json(url, { headers, method: 'POST', body: params });
   };
 
   this.play = async (gameId, uci, offerDraw) => {
-    let url = `https://lichess.org/api/bot/game/${gameId}/move/${uci}`;
+    let url = `api/bot/game/${gameId}/move/${uci}`;
 
     const params = new URLSearchParams();
     params.append('offeringDraw', !!offerDraw);
 
-    let res = await fetch(url + '?' + params, { headers, method: 'POST', params });
+    await rApi.json(url + '?' + params, { headers, method: 'POST', params });
   };
   
 }

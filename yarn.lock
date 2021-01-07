@@ -829,9 +829,9 @@ jest-worker@^24.6.0:
     supports-color "^6.1.0"
 
 jhess@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/jhess/-/jhess-1.0.0.tgz#130bb0355a36c29c66a998d8b223502cc4457d2e"
-  integrity sha512-T3pENaG62PLaKKH8WGYo246fJvhpa4zDt5UOn0wnALHhiE0oFyTlTfM/LjFSn9WWCANoTRcbhzXhL8OC0aaDFg==
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/jhess/-/jhess-1.1.2.tgz#756716fc2d6ed0f0ff7e5f514d24df402865db2a"
+  integrity sha512-I417cLU5y950Dp0Yt96J4WPPUQ8pyoh7BTfMMMq447hPX9sgXp82G982dHKYIDU6Y8lXLQSuxEiKNdJfRIsTkg==
 
 js-tokens@^4.0.0:
   version "4.0.0"

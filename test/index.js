@@ -2,8 +2,8 @@ let Project = require('../project');
 let { envm, terminate } = require('../model');
 
 let env = require('./env');
-
 let moves = require('./moves');
+let api = require('./api');
 
 (async () => {
 
@@ -16,9 +16,11 @@ let moves = require('./moves');
     process.exit(2);
   }
 
-  await env();
+  // await env();
 
-  moves();
+  // moves();
+
+  await api();
 
   await terminate();
 
