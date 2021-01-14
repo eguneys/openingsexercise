@@ -12,9 +12,16 @@ let fixtures = {
     }
     return res;
   },
+  openingFound(openingHandle) {
+    return `
+Your opening preference is set to ${openingHandle}.
+I will play it next.
+`;
+  },
   openingNotFound(opening) {
     return `
 Opening not found ${opening}. See my profile for a list of openings.
+I will play a random opening next.
 `;
   },
   openingLine(line) {
@@ -25,13 +32,10 @@ I'll go for ${line}.
   greet(name) {
     return `
 Hi, ${name}. 
-Pick an opening line from link in my profile to play.
-Otherwise, I will play our last played opening.
+Pick an opening line from link in my profile.
+Otherwise, I will play a random opening.
 💙
 `;
-  },
-  startPlaying() {
-    return `Type "Hello" to start playing now.`;
   }
 };
 

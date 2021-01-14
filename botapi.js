@@ -2,6 +2,7 @@ const { URLSearchParams } = require('url');
 const Rapi = require('./reliableapi');
 const listenStreaming = require('./streamingapi');
 
+const PlayerHistory = require('./playerhistory');
 const Player = require('./player');
 const Chatter = require('./chatter');
 
@@ -129,6 +130,7 @@ function Gamer(botApi, gameId, ctx) {
       opponentName,
       moves;
 
+  let playerHistory = new PlayerHistory(this, ctx);
   let player = new Player(this, ctx);
   let chatter = new Chatter(this);
 
@@ -138,7 +140,6 @@ function Gamer(botApi, gameId, ctx) {
 
   this.greet = () => {
     botApi.chat(gameId, fixtures.greet(opponentName));
-    botApi.chat(gameId, fixtures.startPlaying());
   };
 
   this.chatOpeningLine = line => {
@@ -153,12 +154,16 @@ function Gamer(botApi, gameId, ctx) {
     botApi.play(gameId, uci, offerDraw);
   };
 
-  this.startPlay = () => {
-    player.startPlay();
+  this.pickOpeningInChat = opening => {
+    playerHistory.pickOpening(opening);
   };
 
-  this.selectOpening = opening => {
-    player.startPlay(opening);
+  this.pickOpeningAndPlay = opening => {
+    player.pickOpeningAndStart(opening);
+  };
+
+  this.pickRandomOpeningAndTell = () => {
+    return player.pickOpeningAndStart();
   };
 
   this.gameFull = (game) => {
@@ -172,11 +177,12 @@ function Gamer(botApi, gameId, ctx) {
     opponentName = game[opponentColor].name;
 
     player.init(povColor, initialFen, moves, status);
-
     chatter.init(botName, opponentName);
+    playerHistory.init(opponentName);
 
     return maybeAbortStatus(status);
   };
+
 
   this.gameState = (state) => {
     let { moves, status } = state;

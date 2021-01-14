@@ -21,7 +21,7 @@ function Player(gamer, ctx) {
 
   const turnColor = () => whiteIf(moves.length % 2 === 0);
 
-  this.init = (_povColor, _initialFen, moves, status) => {
+  this.init = (_povColor, _initialFen, moves, status, opponentName) => {
     povColor = _povColor;
     initialFen = _initialFen;
     this.state(moves, status);
@@ -44,25 +44,27 @@ function Player(gamer, ctx) {
     gamer.chat(fixtures.outOfBook(bookMaxDepth - 1, bookPly));
   };
 
-  this.startPlay = (openingId) => {
+  this.pickOpeningAndStart = (openingId) => {
     if (picker.ready()) {
       checkPlay();
-      return;
+      return false;
     }
 
-    pickOpening(openingId);
-
-    checkPlay();
-  };
-
-  const pickOpening = (openingId) => {
     picker.init(openingId);
+
     let opName = picker.openingName();
     if (!opName) {
-      gamer.chat(fixtures.openingNotFound(openingId));
+      // gamer.chat(fixtures.openingNotFound(openingId));
+      picker.init();
+      opName = picker.openingName();
+      gamer.chat(fixtures.openingLine(opName));
     } else {
       gamer.chat(fixtures.openingLine(opName));
     }
+
+    checkPlay();
+
+    return picker.openingId();
   };
 
   const checkPlay = async () => {

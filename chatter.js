@@ -20,14 +20,9 @@ function Chatter(gamer) {
     let openingRegex = /[a-z0-9]*/;
 
     switch (text) {
-    case "Hello":
-    case "Good luck":
-    case "Have fun!":
-      gamer.startPlay();
-      break;
     default:
       if (text.match(openingRegex)) {
-        gamer.selectOpening(text);
+        gamer.pickOpeningInChat(text);
       }
     }
   };
