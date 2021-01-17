@@ -1,6 +1,7 @@
 let OpeningSelector = require('./openingselector');
 let playMoves = require('./playmoves');
-let EnginePlayer = require('./engine');
+
+let enginePlayer = require('./engine');
 
 function MovePicker(player, ctx) {
 
@@ -8,8 +9,6 @@ function MovePicker(player, ctx) {
 
   let outofbook;
   let openingSelector = new OpeningSelector(ctx);
-
-  let enginePlayer = new EnginePlayer();
 
   this.init = (opening) => {
     outofbook = false;
@@ -29,8 +28,6 @@ function MovePicker(player, ctx) {
       move = await bookMove(moves);
 
       if (!move) {
-        await enginePlayer.init();
-
         move = await engineMove(moves);
         move.outofbook = true;
         outofbook = true;
