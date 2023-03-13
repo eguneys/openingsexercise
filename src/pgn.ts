@@ -58,7 +58,6 @@ export function read_pgn(pgn: string): OPGN {
         res.final = true
       }
       if (!skip_main && moves.length > 0) {
-        console.log(san, fen, moves)
         poss.push(res)
       }
 
@@ -137,4 +136,15 @@ function weightedRandomSelect<T>(array: T[]) {
       return array[i];
     }
   }
+}
+
+const initial_fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+export function fen_after_ucis(position: string, moves: string[]) {
+
+  if (position === 'startpos') {
+    position = initial_fen
+  }
+  let chess = new Chess(position)
+  moves.forEach(_ => chess.move(_))
+  return chess.fen()
 }
