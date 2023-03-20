@@ -9,6 +9,7 @@ type PgnMove = {
 
 export type OPGN = {
   title: string,
+  fen?: string,
   poss: Array<OPos>
 }
 
@@ -25,6 +26,8 @@ export function read_pgn(pgn: string): OPGN {
   let game = parse(pgn, { startRule: 'game' }) as ParseTree
 
   let title = game.tags?.Event || ''
+
+  let fen = game.tags?.FEN
 
   let poss: Array<OPos> = []
 
@@ -69,10 +72,11 @@ export function read_pgn(pgn: string): OPGN {
     })
   }
 
-  read_moves('', new Chess(), game.moves)
+  read_moves('', new Chess(fen || initial_fen), game.moves)
 
   return {
     title,
+    fen,
     poss
   }
 }

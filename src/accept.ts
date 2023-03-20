@@ -41,4 +41,7 @@ export function canAccept({ challenge }: at.Challenge, config: AcceptConfig): at
   if (!config.controls.includes(challenge.timeControl.show)) {
     return 'timeControl'
   }
+  if (challenge.compat.bot) {
+    return 'generic'
+  }
 }
