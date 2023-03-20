@@ -60,7 +60,7 @@ export type Challenge = {
   "challenge":{
     "id":GameId,
     "status": GameStatus,
-    "compat": { "bot": boolean },
+    "compat"?: { "bot": boolean },
     "challenger": User,
     "destUser": User,
     "variant": { "key": string },
