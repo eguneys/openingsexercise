@@ -39,7 +39,8 @@ export type GameFinish = {
 
 export type User = {
   id: UserId,
-  name: string
+  name: string,
+  title: string
 }
 
 export type DeclineReason =
@@ -60,7 +61,6 @@ export type Challenge = {
   "challenge":{
     "id":GameId,
     "status": GameStatus,
-    "compat"?: { "bot": boolean },
     "challenger": User,
     "destUser": User,
     "variant": { "key": string },
