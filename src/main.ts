@@ -9,6 +9,7 @@ async function app() {
 
   let timeout = conf.timeout * 60 * 1000
 
+  //timeout = 1000
 
   let psu: IPlayer = Psu.make(conf)
 

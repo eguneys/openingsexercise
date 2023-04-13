@@ -42,6 +42,7 @@ export async function accept_challenges(conf: Conf, player: IPlayer) {
   let { abort, response } = await incomingEvents(conf.token)
 
   let dispose = () => {
+    response.destroy()
     abort()
   }
 
@@ -55,6 +56,9 @@ export async function accept_challenges(conf: Conf, player: IPlayer) {
       respondChallenge(data.challenge.id, reason)
     }
   })
+
+  //response.on('close', () => console.log('closed'))
+  //response.on('end', () => console.log('ended'))
 
 
   return dispose

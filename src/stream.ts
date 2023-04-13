@@ -43,9 +43,6 @@ export class Stream implements IStream {
         throw response.statusText;
       }
 
-      //const readableNodeStream = Readable.fromWeb(response.body as any)
-      //readableNodeStream.on('error', e => { })
-
       return {
         abort,
         response: response.body.pipe(ndjson.parse())
