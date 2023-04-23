@@ -63,14 +63,19 @@ export abstract class Play {
 
       return new Promise<void>(resolve => {
 
-        this.fAbort = () => {
-          abort()
-          resolve()
-        }
-        setTimeout(() => {
+        let c_timeout = setTimeout(() => {
+          response.destroy()
           abort()
           resolve()
         }, this.conf.timeout * 60 * 1000)
+
+
+        this.fAbort = () => {
+          clearTimeout(c_timeout)
+          response.destroy()
+          abort()
+          resolve()
+        }
       })
     })
   }
