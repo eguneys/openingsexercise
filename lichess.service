@@ -1,0 +1,12 @@
+[Unit]
+Description=openingsexercise Lichess Bot
+After=network.target
+
+[Service]
+WorkingDirectory=/home/eguneys/openingsexercise
+ExecStart=node ./dist/main.js
+Restart=always
+User=eguneys
+
+[Install]
+WantedBy=multi-user.target
